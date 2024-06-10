@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shark and Fish Game</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.10/pixi.min.js"></script>
+</head>
+<body>
+  <script>
+    const app = new PIXI.Application({ 
+      width: 800, 
+      height: 600,                       
+      antialias: true, 
+      transparent: false, 
+      resolution: 1,
+      backgroundColor: 0x1099bb
+    });
+
+    document.body.appendChild(app.view);
+
+    // Load images
+    PIXI.Loader.shared
+      .add('shark', 'images/shark1.png')
+      .add('fish', 'images/fish1.png')
+      .load(setup);
+
+    let shark;
+    let fishArr = [];
+    let score = 0;
+
+    function setup() {
+      // Create shark sprite
+      shark = new PIXI.Sprite(PIXI.Loader.shared.resources.shark.texture);
+      shark.anchor.set(0.5);
+      shark.scale.set(0.2);
+      shark.x = app.screen.width / 2;
+      shark.y = app.screen.height / 2;
+      app.stage.addChild(shark);
+
+      // Create fish
+      for (let i = 0; i < 10; i++) {
+        const fish = new PIXI.Sprite(PIXI.Loader.shared.resources.fish.texture);
+        fish.anchor.set(0.5);
+        fish.scale.set(0.2); // Adjust the scale to make it smaller
+        fish.x = Math.random() * app.screen.width;
+        fish.y = Math.random() * app.screen.height;
+        fishArr.push(fish);
+        app.stage.addChild(fish);
+      }
+
+      // Setup game loop
+      app.ticker.add(delta => gameLoop(delta));
+
+      // Add click event listener to spawn more fish
+      app.stage.interactive = true;
+      app.stage.on('pointerdown', () => {
+        if (fishArr.length === 0 && confirm("You've eaten all the fish! Do you want to spawn some more in?")) {
+          spawnFish();
+        }
+      });
+    }
+
+    function gameLoop(delta) {
+      // Move shark to mouse position
+      shark.x = app.renderer.plugins.interaction.mouse.global.x;
+      shark.y = app.renderer.plugins.interaction.mouse.global.y;
+
+      // Check for collision with fish
+      for (let i = 0; i < fishArr.length; i++) {
+        const fish = fishArr[i];
+        if (shark.getBounds().contains(fish.x, fish.y)) {
+          // Remove fish and increase score
+          app.stage.removeChild(fish);
+          fishArr.splice(i, 1);
+          score += 10;
+          console.log('Score:', score);
+        }
+      }
+    }
+
+    function spawnFish() {
+      for (let i = 0; i < 10; i++) {
+        const fish = new PIXI.Sprite(PIXI.Loader.shared.resources.fish.texture);
+        fish.anchor.set(0.5);
+        fish.scale.set(0.2);
+        fish.x = Math.random() * app.screen.width;
+        fish.y = Math.random() * app.screen.height;
+        fishArr.push(fish);
+        app.stage.addChild(fish);
+      }
+    }
+  </script>
+</body>
+</html>
