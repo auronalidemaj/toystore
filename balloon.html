@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balloon Pop Game</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.10/pixi.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+    }
+    .game-over-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      display: none;
+      z-index: 10;
+    }
+    .game-over-message {
+      font-family: Arial, sans-serif;
+      font-size: 32px;
+      color: #ff0000;
+      margin-bottom: 20px;
+    }
+    .try-again-button {
+      font-family: Arial, sans-serif;
+      font-size: 24px;
+      padding: 10px 20px;
+      background-color: #ff0000;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-over-container" id="gameOverContainer">
+    <div class="game-over-message">You didn't pop 10 balloons, you lose!</div>
+    <button class="try-again-button" onclick="location.reload()">Try Again</button>
+  </div>
+  
+  <script>
+    const app = new PIXI.Application({ 
+      width: 800, 
+      height: 600,                       
+      antialias: true, 
+      transparent: false, 
+      resolution: 1,
+      backgroundColor: 0x87ceeb
+    });
+
+    document.body.appendChild(app.view);
+
+    // Load images
+    PIXI.Loader.shared
+      .add('balloon', 'images/balloon.png')
+      .load(setup);
+
+    let balloons = [];
+    let score = 0;
+    let missedBalloons = 0;
+    let scoreText;
+    let gameOverText;
+    let gameOver = false;
+
+    function setup() {
+      // Setup score text
+      scoreText = new PIXI.Text('Score: 0', {
+        fontFamily: 'Arial',
+        fontSize: 24,
+        fill: 0xffffff,
+        align: 'center'
+      });
+      scoreText.position.set(10, 10);
+      app.stage.addChild(scoreText);
+
+      // Spawn initial balloons
+      for (let i = 0; i < 5; i++) {
+        spawnBalloon();
+      }
+
+      // Setup game loop
+      app.ticker.add(delta => gameLoop(delta));
+
+      // Add click event listener to pop balloons
+      app.stage.interactive = true;
+      app.stage.on('pointerdown', onClick);
+    }
+
+    function spawnBalloon() {
+      if (gameOver) return;
+      
+      const balloon = new PIXI.Sprite(PIXI.Loader.shared.resources.balloon.texture);
+      balloon.anchor.set(0.5);
+      balloon.scale.set(0.5);
+      balloon.x = Math.random() * app.screen.width;
+      balloon.y = app.screen.height + balloon.height;
+      balloon.vy = Math.random() * 2 + 1; // Random vertical speed
+      balloon.interactive = true;
+      balloon.buttonMode = true;
+      balloon.on('pointerdown', popBalloon);
+      balloons.push(balloon);
+      app.stage.addChild(balloon);
+    }
+
+    function popBalloon() {
+      this.off('pointerdown', popBalloon);
+      app.stage.removeChild(this);
+      balloons = balloons.filter(balloon => balloon !== this);
+      score += 10;
+      scoreText.text = `Score: ${score}`;
+
+      // Spawn a new balloon after popping
+      spawnBalloon();
+    }
+
+    function gameLoop(delta) {
+      if (gameOver) return;
+
+      // Move balloons upwards
+      for (let balloon of balloons) {
+        balloon.y -= balloon.vy;
+        if (balloon.y < -balloon.height) {
+          // Remove the balloon and increment missed count
+          app.stage.removeChild(balloon);
+          balloons = balloons.filter(b => b !== balloon);
+          missedBalloons++;
+
+          // Check if game over
+          if (missedBalloons >= 10) {
+            gameOver = true;
+            showGameOver();
+          } else {
+            // Spawn a new balloon
+            spawnBalloon();
+          }
+        }
+      }
+    }
+
+    function showGameOver() {
+      const gameOverContainer = document.getElementById('gameOverContainer');
+      gameOverContainer.style.display = 'block';
+    }
+
+    function onClick(event) {
+      if (gameOver) return;
+
+      // Spawn a balloon on click if the player clicks on the background
+      const clickPosition = event.data.global;
+      let clickedBalloon = false;
+
+      for (let balloon of balloons) {
+        if (balloon.getBounds().contains(clickPosition.x, clickPosition.y)) {
+          clickedBalloon = true;
+          break;
+        }
+      }
+
+      if (!clickedBalloon) {
+        spawnBalloon();
+      }
+    }
+  </script>
+</body>
+</html>

@@ -5,7 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dark Themed Navbar with Full-Screen Slider</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
   <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
     .navbar-dark .navbar-nav .nav-link {
       color: white;
     }
@@ -27,10 +36,49 @@
     }
     .content-section {
       padding: 50px 0;
+      flex: 1;
     }
     .animated-text {
       display: inline;
     }
+    footer {
+      background-color: #343a40;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+    footer a {
+      color: white;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    .swiper {
+      width: 240px;
+      height: 320px;
+    }
+    .swiper-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    .swiper-slide:nth-child(1n) { background-color: rgb(206, 17, 17); }
+    .swiper-slide:nth-child(2n) { background-color: rgb(0, 140, 255); }
+    .swiper-slide:nth-child(3n) { background-color: rgb(10, 184, 111); }
+    .swiper-slide:nth-child(4n) { background-color: rgb(211, 122, 7); }
+    .swiper-slide:nth-child(5n) { background-color: rgb(118, 163, 12); }
+    .swiper-slide:nth-child(6n) { background-color: rgb(180, 10, 47); }
+    .swiper-slide:nth-child(7n) { background-color: rgb(35, 99, 19); }
+    .swiper-slide:nth-child(8n) { background-color: rgb(0, 68, 255); }
+    .swiper-slide:nth-child(9n) { background-color: rgb(218, 12, 218); }
+    .swiper-slide:nth-child(10n) { background-color: rgb(54, 94, 77); }
   </style>
 </head>
 <body>
@@ -49,15 +97,10 @@
             <a class="nav-link" href="#">Products</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="review.html">Feedback</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
+            <a class="nav-link" href="review.html">Reviews</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Signup</a>
+            <a class="nav-link" href="entertainment.html">Entertainment</a>
           </li>
         </ul>
       </div>
@@ -103,7 +146,7 @@
   <div class="container content-section">
     <div class="row">
       <div class="col-md-6 d-flex flex-column justify-content-center align-items-center text-center">
-        <h3>Do you want to <span class="animated-text">purchase our toys?</span></h3>
+        <h3><span class="animated-text">purchase our toys?</span></h3>
         <a href="#" class="btn btn-dark btn-rounded mt-3">Visit Store</a>
       </div>
       <div class="col-md-6 d-flex justify-content-center align-items-center">
@@ -112,7 +155,57 @@
     </div>
   </div>
 
+  <div class="container content-section">
+    <h2 class="text-center mb-5">Testimonials</h2>
+    <div class="d-flex justify-content-center">
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">John Smith: "Great toys for kids!"</div>
+          <div class="swiper-slide">Jane Doe: "Amazing quality and fast shipping."</div>
+          <div class="swiper-slide">Sam Wilson: "My kids love these toys!"</div>
+          <div class="swiper-slide">Lucy Brown: "Excellent customer service."</div>
+          <div class="swiper-slide">Mike Johnson: "Wide variety and affordable prices."</div>
+          <div class="swiper-slide">Emily Davis: "Highly recommend this store."</div>
+          <div class="swiper-slide">Sophia Lee: "Best toy store in town!"</div>
+          <div class="swiper-slide">Chris Kim: "Great selection and service."</div>
+          <div class="swiper-slide">Anna White: "My go-to store for toys."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>Contact Us</h5>
+          <p>Email: support@toystore.com</p>
+          <p>Phone: (123) 456-7890</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Follow Us</h5>
+          <a href="#">Facebook</a><br>
+          <a href="#">Instagram</a><br>
+          <a href="#">Twitter</a>
+        </div>
+        <div class="col-md-4">
+          <h5>Quick Links</h5>
+          <a href="#">Home</a><br>
+          <a href="#">Products</a><br>
+          <a href="review.html">Review</a><br>
+          <a href="#">Entertainment</a><br>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12">
+          <p>&copy; 2024 Toystore. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
       const baseText = "Do you want to ";
@@ -146,6 +239,12 @@
       }
 
       setTimeout(type, typeSpeed);
+
+      // Initialize Swiper
+      const swiper = new Swiper('.swiper', {
+        effect: 'cards',
+        grabCursor: true,
+      });
     });
   </script>
 </body>
