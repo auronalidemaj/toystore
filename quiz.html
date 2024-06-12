@@ -14,6 +14,7 @@
       min-height: 100vh;
       background-color: #f0f0f0;
       font-family: Arial, sans-serif;
+      position: relative; /* Ensure the body can contain absolutely positioned elements */
     }
 
     .content-section {
@@ -22,6 +23,8 @@
       justify-content: center;
       align-items: center;
       text-align: center;
+      position: relative; /* Relative position for z-index stacking */
+      z-index: 1; /* Ensure content is above the PIXI canvas */
     }
 
     .question {
@@ -69,6 +72,12 @@
       color: white;
       padding: 20px 0;
       text-align: center;
+      position: relative; 
+      z-index: 1; 
+    }
+
+    nav {
+      z-index: 1
     }
 
     footer a {
@@ -80,8 +89,15 @@
       text-decoration: underline;
     }
 
-    .hide {
-      display: none;
+    /* PIXI.js Canvas */
+    #pixi-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0; /* Lower z-index to place behind content */
     }
   </style>
 </head>
@@ -115,6 +131,9 @@
       </div>
     </div>
   </nav>
+
+  <!-- PIXI.js Container for Bouncing Ball Animation -->
+  <div id="pixi-container"></div>
 
   <!-- Quiz content section -->
   <div class="content-section">
@@ -158,7 +177,8 @@
     </div>
   </footer>
 
-  <!-- JavaScript for the quiz -->
+  <!-- JavaScript for the quiz and PIXI.js animation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.3.3/pixi.min.js"></script>
   <script>
     const quizData = [
       {
@@ -233,8 +253,38 @@
     // Start the quiz
     quizContainer.classList.remove('hide');
     displayQuestion();
-  </script>
 
+    // PIXI.js animation for bouncing ball
+    document.addEventListener('DOMContentLoaded', function () {
+      const app = new PIXI.Application({ width: window.innerWidth, height: window.innerHeight, backgroundColor: 0x1099bb });
+      document.getElementById('pixi-container').appendChild(app.view);
+
+      const ball = new PIXI.Graphics();
+      ball.beginFill(0xff2200);
+      ball.drawCircle(0, 0, 50);
+      ball.endFill();
+      ball.x = app.screen.width / 2;
+      ball.y = app.screen.height / 2;
+
+      let velocityX = 5;
+      let velocityY = 3;
+
+      app.stage.addChild(ball);
+
+      app.ticker.add(() => {
+        ball.x += velocityX;
+        ball.y += velocityY;
+
+        if (ball.x + ball.width / 2 >= app.screen.width || ball.x - ball.width / 2 <= 0) {
+          velocityX = -velocityX;
+        }
+
+        if (ball.y + ball.height / 2 >= app.screen.height || ball.y - ball.height / 2 <= 0) {
+          velocityY = -velocityY;
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>
