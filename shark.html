@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cute Quiz</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+    }
+
+    .content-section {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .question {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .options {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .option-button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .option-button:hover {
+      background-color: #f9f9f9;
+      transform: translateY(-5px);
+    }
+
+    .option-button.correct {
+      background-color: #90ee90;
+      border-color: #90ee90;
+    }
+
+    .option-button.wrong {
+      background-color: #ff6961;
+      border-color: #ff6961;
+    }
+
+    footer {
+      background-color: #343a40;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    footer a {
+      color: white;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .hide {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand me-5" href="#">Toystore</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="products.html">Products</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="review.html">Reviews</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="balloon.html">Catch the Balloons</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="quiz.html">Quiz</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Quiz content section -->
+  <div class="content-section">
+    <div id="quiz-container" class="question hide">
+      <!-- Question will be inserted here -->
+      <h2 id="question-text"></h2>
+      <!-- Options will be inserted here -->
+      <div id="options" class="options"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>Contact Us</h5>
+          <p>Email: support@toystore.com</p>
+          <p>Phone: (123) 456-7890</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Follow Us</h5>
+          <a href="#">Facebook</a><br>
+          <a href="#">Instagram</a><br>
+          <a href="#">Twitter</a>
+        </div>
+        <div class="col-md-4">
+          <h5>Quick Links</h5>
+          <a href="index.html">Home</a><br>
+          <a href="products.html">Products</a><br>
+          <a href="review.html">Reviews</a><br>
+          <a href="balloon.html">Catch the Balloons</a><br>
+          <a href="quiz.html">Quiz</a><br>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12">
+          <p>&copy; 2024 Toystore. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript for the quiz -->
+  <script>
+    const quizData = [
+      {
+        question: "What is the capital of France?",
+        options: ["Paris", "Rome", "Madrid"],
+        answer: "Paris"
+      },
+      {
+        question: "Which animal barks?",
+        options: ["Cat", "Dog", "Bird"],
+        answer: "Dog"
+      },
+      {
+        question: "What is the largest planet in our solar system?",
+        options: ["Earth", "Mars", "Jupiter"],
+        answer: "Jupiter"
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let answered = false;
+    const quizContainer = document.getElementById('quiz-container');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options');
+
+    function displayQuestion() {
+      const currentQuestion = quizData[currentQuestionIndex];
+      questionText.textContent = currentQuestion.question;
+      optionsContainer.innerHTML = '';
+
+      currentQuestion.options.forEach(option => {
+        const button = document.createElement('button');
+        button.textContent = option;
+        button.classList.add('option-button');
+        button.onclick = () => {
+          if (!answered) checkAnswer(option, button);
+        };
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function checkAnswer(selectedOption, button) {
+      const question = quizData[currentQuestionIndex];
+      answered = true;
+
+      if (selectedOption === question.answer) {
+        score++;
+        button.classList.add('correct');
+      } else {
+        button.classList.add('wrong');
+        setTimeout(() => {
+          button.classList.remove('wrong');
+        }, 1000);
+      }
+
+      currentQuestionIndex++;
+      if (currentQuestionIndex < quizData.length) {
+        setTimeout(() => {
+          displayQuestion();
+          answered = false;
+        }, 2000);
+      } else {
+        showScore();
+      }
+    }
+
+    function showScore() {
+      quizContainer.innerHTML = `<h2>Your score: ${score} / ${quizData.length}</h2>`;
+    }
+
+    // Start the quiz
+    quizContainer.classList.remove('hide');
+    displayQuestion();
+  </script>
+
+</body>
+
+</html>

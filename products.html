@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Products</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .navbar-dark .navbar-nav .nav-link {
+      color: white;
+    }
+    .navbar-dark .navbar-nav .nav-link:hover, .navbar-dark .navbar-nav .nav-link.active {
+      color: gray; 
+    }
+    .content-section {
+      padding: 50px 0;
+      flex: 1;
+    }
+    footer {
+      background-color: #343a40;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+    footer a {
+      color: white;
+      text-decoration: none;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    .product-card {
+      margin-bottom: 30px;
+      transition: transform 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-10px);
+    }
+    .product-card img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      margin: 0 auto;
+    }
+    .product-card {
+      opacity: 0;
+      transform: translateY(-50px);
+      animation: dropDown 0.5s forwards;
+    }
+    .product-card:nth-child(1) { animation-delay: 0.2s; }
+    .product-card:nth-child(2) { animation-delay: 0.4s; }
+    .product-card:nth-child(3) { animation-delay: 0.6s; }
+    .product-card:nth-child(4) { animation-delay: 0.8s; }
+    .product-card:nth-child(5) { animation-delay: 1.0s; }
+    .product-card:nth-child(6) { animation-delay: 1.2s; }
+    @keyframes dropDown {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand me-5" href="#">Toystore</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="products.html">Products</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="review.html">Reviews</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="balloon.html">Catch the Balloons</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="shark.html">Eat the fish</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container content-section">
+    <h2 class="text-center mb-5">Our Products</h2>
+    <div class="row">
+      <div class="col-md-4 product-card">
+        <div class="card">
+          <img src="images/prod1.png" class="card-img-top" alt="Product 1">
+          <div class="card-body">
+            <h5 class="card-title">Product 1</h5>
+            <p class="card-text">$10.00</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 product-card">
+        <div class="card">
+          <img src="images/prod2.png" class="card-img-top" alt="Product 2">
+          <div class="card-body">
+            <h5 class="card-title">Product 2</h5>
+            <p class="card-text">$20.00</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 product-card">
+        <div class="card">
+          <img src="images/prod3.png" class="card-img-top" alt="Product 3">
+          <div class="card-body">
+            <h5 class="card-title">Product 3</h5>
+            <p class="card-text">$30.00</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 product-card">
+        <div class="card">
+          <img src="images/prod4.png" class="card-img-top" alt="Product 4">
+          <div class="card-body">
+            <h5 class="card-title">Product 4</h5>
+            <p class="card-text">$40.00</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 product-card">
+        <div class="card">
+          <img src="images/prod5.png" class="card-img-top" alt="Product 5">
+          <div class="card-body">
+            <h5 class="card-title">Product 5</h5>
+            <p class="card-text">$50.00</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 product-card">
+        <div class="card">
+          <img src="images/prod6.png" class="card-img-top" alt="Product 6">
+          <div class="card-body">
+            <h5 class="card-title">Product 6</h5>
+            <p class="card-text">$60.00</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>Contact Us</h5>
+          <p>Email: support@toystore.com</p>
+          <p>Phone: (123) 456-7890</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Follow Us</h5>
+          <a href="#">Facebook</a><br>
+          <a href="#">Instagram</a><br>
+          <a href="#">Twitter</a>
+        </div>
+        <div class="col-md-4">
+          <h5>Quick Links</h5>
+          <a href="index.html">Home</a><br>
+          <a href="products.html">Products</a><br>
+          <a href="review.html">Reviews</a><br>
+          <a href="balloon.html">Catch the Balloons</a><br>
+          <a href="shark.html">Eat the fish</a><br>
+
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12">
+          <p>&copy; 2024 Toystore. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
